@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using waterchat.Data;
 using waterchat.Models;
 using waterchat.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace waterchat
 {
@@ -46,6 +48,18 @@ namespace waterchat
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            //var settings = new JsonSerializerSettings();
+            //settings.ContractResolver = new SignalRContractResolver() as IContractResolver;
+
+            //var serializer = JsonSerializer.Create(settings);
+
+            //services.Add(new ServiceDescriptor(typeof(JsonSerializer),
+            //                                provider => serializer,
+            //                                ServiceLifetime.Transient));
+
+
+            //services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
 
             services.AddMvc();
 
@@ -83,6 +97,9 @@ namespace waterchat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+            //app.UseSignalR();
         }
     }
 }
