@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  waterchat:
+    image: waterchat
+    build:
+      context: ./waterchat
+      dockerfile: Dockerfile
