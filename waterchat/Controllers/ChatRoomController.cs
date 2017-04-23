@@ -21,9 +21,9 @@ namespace waterchat.Controllers
     public class ChatroomController : ApiHubController<Broadcaster>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private ApplicationDbContext _context;
+        private WaterChatPostgresContext _context;
 
-        public ChatroomController(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx, IConnectionManager connectionManager)
+        public ChatroomController(UserManager<ApplicationUser> userManager, WaterChatPostgresContext ctx, IConnectionManager connectionManager)
         : base(connectionManager)
         {
             _userManager = userManager;

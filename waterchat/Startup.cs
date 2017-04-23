@@ -41,25 +41,30 @@ namespace waterchat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //Use a PostgreSQL database
+            var sqlConnectionString = Configuration.GetConnectionString("DataAccessPostgreSqlProvider");
+
+            services.AddDbContext<WaterChatPostgresContext>(
+                options => options.UseNpgsql(sqlConnectionString)
+            );
+
+            //services.AddScoped<IDataAccessProvider, DataAccessPostgreSqlProvider>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<WaterChatPostgresContext>()
                 .AddDefaultTokenProviders();
 
-            //var settings = new JsonSerializerSettings();
-            //settings.ContractResolver = new SignalRContractResolver() as IContractResolver;
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new SignalRContractResolver() as IContractResolver;
 
-            //var serializer = JsonSerializer.Create(settings);
+            var serializer = JsonSerializer.Create(settings);
 
-            //services.Add(new ServiceDescriptor(typeof(JsonSerializer),
-            //                                provider => serializer,
-            //                                ServiceLifetime.Transient));
+            services.Add(new ServiceDescriptor(typeof(JsonSerializer),
+                                            provider => serializer,
+                                            ServiceLifetime.Transient));
 
 
-            //services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
+            services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
 
             services.AddMvc();
 
@@ -98,8 +103,13 @@ namespace waterchat
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            // Create DB on startup
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetService<WaterChatPostgresContext>().Database.Migrate();
+            }
 
-            //app.UseSignalR();
+            app.UseSignalR();
         }
     }
 }

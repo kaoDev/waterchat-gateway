@@ -1,8 +1,33 @@
 version: '2'
 
 services:
+  postgresserver:
+     image: waterchatpostgres
+     restart: always
+     ports:
+       - 5433:5432
+     environment:
+         POSTGRES_PASSWORD: waterchat
+     volumes:
+       - pgdata:/var/lib/postgresql/data
+     networks:
+       - mynetwork
+
   waterchat:
     image: waterchat
     build:
       context: ./waterchat
       dockerfile: Dockerfile
+    links:
+       - postgresserver
+    depends_on:
+       - "postgresserver"
+    networks:
+       - mynetwork
+ 
+volumes:
+  pgdata:
+ 
+networks:
+  mynetwork:
+     driver: bridge

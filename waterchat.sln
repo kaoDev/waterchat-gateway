@@ -7,6 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "waterchat", "waterchat\wate
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6FD1D032-5C25-4F85-98E3-2EFD72D7EF05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4C1BBABA-BDBE-4DF3-A668-238AA8FFD223}"
+	ProjectSection(SolutionItems) = preProject
+		postgresdocker\docker-compose.yml = postgresdocker\docker-compose.yml
+		postgresdocker\Dockerfile = postgresdocker\Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dbscripts", "dbscripts", "{245D98A8-604C-4AED-9F42-A1E5EC7E89D2}"
+	ProjectSection(SolutionItems) = preProject
+		postgresdocker\dbscripts\init.sql = postgresdocker\dbscripts\init.sql
+		postgresdocker\dbscripts\waterchat.sql = postgresdocker\dbscripts\waterchat.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +36,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{245D98A8-604C-4AED-9F42-A1E5EC7E89D2} = {4C1BBABA-BDBE-4DF3-A668-238AA8FFD223}
 	EndGlobalSection
 EndGlobal
