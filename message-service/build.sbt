@@ -15,4 +15,6 @@ lazy val root = (project in file(".")).
       "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
       "org.scalatest"     %% "scalatest"         % "3.0.1"         % Test
     )
+
+    libraryDependencies += "com.geteventstore" %% "eventstore-client" % "4.1.1" // https://github.com/EventStore/EventStore.JVM
   )
