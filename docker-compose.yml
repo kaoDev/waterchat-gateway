@@ -1,0 +1,34 @@
+version: '3'
+services:
+  eventstore:
+    image: eventstore/eventstore
+    ports:
+      - 2113:2113
+      - 1113:1113
+    volumes:
+      - ./eventstore/data:/var/lib/eventstore
+  micro-auth:
+    image: waterchat/micro-auth
+    ports:
+      - 3000:3000
+    links:
+      - eventstore
+    depends_on:
+      - eventstore
+  gateway:
+    image: waterchat/gateway
+    build:
+      context: ./
+      dockerfile: Dockerfile.gateway
+    ports:
+      - 2015:2015
+      - 8080:80
+      - 5443:443
+    depends_on:
+      - micro-auth
+    links:
+      - micro-auth:auth
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
