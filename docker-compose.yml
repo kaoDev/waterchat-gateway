@@ -6,7 +6,7 @@ services:
       - 2113:2113
       - 1113:1113
     volumes:
-      - ./eventstore/data:/var/lib/eventstore
+      - /home/cap3/eventstore/data:/var/lib/eventstore
   micro-auth:
     image: waterchat/micro-auth
     ports:
