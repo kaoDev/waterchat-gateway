@@ -1,4 +1,4 @@
-https://office.cap3.de:57503/, http://office.cap3.de:57580, http://waterchat.cap3.de, https://waterchat.cap3.de {
+:80, :443, :2015 {
     proxy /auth auth:3000
     proxy / auth:3000/protected
 }
