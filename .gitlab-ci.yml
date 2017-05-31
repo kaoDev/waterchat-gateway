@@ -3,15 +3,7 @@ variables:
   PROJECT_NAME: gateway
 
 stages:
-  - build
   - deploy
-
-build:
-  stage: build
-  script:
-    - docker build -f Dockerfile.gateway -t $PROJECT_GROUP/$PROJECT_NAME .
-  tags:
-    - shell
 
 deploy:
   stage: deploy
