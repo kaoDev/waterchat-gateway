@@ -16,6 +16,7 @@ build:
 deploy:
   stage: deploy
   script:
-    - docker stack deploy -c docker-compose.yml $PROJECT_NAME
+    - docker stack rm $PROJECT_GROUP
+    - docker stack deploy -c docker-compose.yml $PROJECT_GROUP
   tags:
     - shell
