@@ -66,8 +66,6 @@ services:
     image: waterchat/micro-auth
     ports:
       - 3030:3000
-    links:
-      - eventstore
     depends_on:
       - eventstore
     networks:
