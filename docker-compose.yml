@@ -7,8 +7,6 @@ services:
       - /home/cap3/kong/cassandra:/var/lib/cassandra
     ports:
       - "9042:9042"
-    networks:
-      - waterchat
   kong:
     image: kong:0.10
     environment:
@@ -21,14 +19,10 @@ services:
       - "8001:8001"
       - "7946:7946"
       - "7946:7946/udp"
-    networks:
-      - waterchat
   kong-dashboard:
     image: pgbi/kong-dashboard:v2
     ports:
       - "8080:8080"
-    networks:
-      - waterchat
   eventstore:
     image: eventstore/eventstore
     ports:
@@ -36,10 +30,8 @@ services:
       - "1113:1113"
     volumes:
       - /home/cap3/eventstore/data:/var/lib/eventstore
-    networks:
-      - waterchat
   micro-auth:
-    image: waterchat/micro-auth
+    image: waterchat/micro-auth:latest
     ports:
       - "3030:3000"
     environment:
@@ -48,9 +40,3 @@ services:
       - GITHUB_SECRET
     depends_on:
       - eventstore
-    networks:
-      - waterchat
-
-networks:
-    waterchat:
-
