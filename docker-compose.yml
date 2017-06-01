@@ -12,14 +12,14 @@ services:
       - "/home/cap3/kong/postgres:/var/lib/postgresql/data"
     deploy:
       restart_policy:
-        condition: on-failure
+        condition: any
     networks:
       - waterchat
   kong:
     image: kong:0.10
     deploy:
       restart_policy:
-        condition: on-failure
+        condition: any
     depends_on:
       - kong-database
     environment:
@@ -43,12 +43,12 @@ services:
       - waterchat
     deploy:
       restart_policy:
-        condition: on-failure
+        condition: any
   eventstore:
     image: eventstore/eventstore
     deploy:
       restart_policy:
-        condition: on-failure
+        condition: any
     ports:
       - "2113:2113"
       - "1113:1113"
@@ -63,7 +63,8 @@ services:
         parallelism: 2
         delay: 10s
       restart_policy:
-        condition: on-failure
+        condition: any
+        delay: 10s
     ports:
       - "3030:3000"
     depends_on:
