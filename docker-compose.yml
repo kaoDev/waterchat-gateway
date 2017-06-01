@@ -38,9 +38,5 @@ services:
     image: waterchat/micro-auth:latest
     ports:
       - "3030:3000"
-    environment:
-      - GITHUB_CALLBACK
-      - GITHUB_ID
-      - GITHUB_SECRET
     depends_on:
       - eventstore
