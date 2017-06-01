@@ -57,7 +57,4 @@ services:
       - waterchat
 networks:
   waterchat:
-    dns:
-      - 8.8.8.8
-      - 9.9.9.9
   
