@@ -3,16 +3,20 @@ version: '3'
 services:
   kong-database:
     image: cassandra:3
-    restart: always
     volumes:
       - /home/cap3/kong/cassandra:/var/lib/cassandra
     ports:
       - "9042:9042"
+    deploy:
+      restart_policy:
+        condition: on-failure
     networks:
       - waterchat
   kong:
     image: kong:0.10
-    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
     depends_on:
       - kong-database
     environment:
@@ -29,16 +33,20 @@ services:
       - waterchat
   kong-dashboard:
     image: pgbi/kong-dashboard:v2
-    restart: always
     ports:
       - "8080:8080"
     depends_on:
       - kong
     networks:
       - waterchat
+    deploy:
+      restart_policy:
+        condition: on-failure
   eventstore:
     image: eventstore/eventstore
-    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
     ports:
       - "2113:2113"
       - "1113:1113"
@@ -48,7 +56,12 @@ services:
       - waterchat
   micro-auth:
     image: waterchat/micro-auth:latest
-    restart: always
+    deploy:
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     ports:
       - "3030:3000"
     depends_on:
