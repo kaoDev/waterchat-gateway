@@ -1,63 +1,29 @@
 version: '3'
 
 services:
-  tyk_redis:
-    image: redis:latest
-    hostname: redis
+  kong-database:
+    image: cassandra:3
+    volumes:
+      - /home/cap3/kong/cassandra:/var/lib/cassandra
     ports:
-      - "6379:6379"
-    volumes:
-      - /home/cap3/tyk/redis/data:/data
-    networks:
-      gateway:
-        aliases:
-          - redis
-  tyk_mongo:
-    image: mongo:latest
-    command: ["mongod", "--smallfiles"]
-    hostname: mongo
+      - "9042:9042"
+  kong:
+    image: kong:0.10
+    environment:
+      - KONG_DATABASE=cassandra
+      - KONG_CASSANDRA_CONTACT_POINTS=kong-database
+      - KONG_PG_HOST=kong-database
     ports:
-      - "27017:27017"
-    volumes:
-      - /home/cap3/tyk/mongo/data/db:/data/db
-    networks:
-      gateway:
-        aliases:
-          - mongo
-  tyk_dashboard:
-    image: tykio/tyk-dashboard:latest
-    ports:
-      - "3000:3000"
-      - "5000:5000"
-    volumes:
-      - /home/cap3/tyk/tyk_analytics.conf:/opt/tyk-dashboard/tyk_analytics.conf
-    networks:
-      - gateway
-  tyk_pump:
-    image: tykio/tyk-pump-docker-pub:latest
-    networks:
-      - gateway
-    volumes:
-      - /home/cap3/tyk/pump.conf:/opt/tyk-pump/pump.conf
-  tyk_gateway:
-    image: tykio/tyk-gateway:latest
-    ports:
-      - "80:8080"
-      - "443:8080"
-      - "8080:8080"
-    volumes:
-      - /home/cap3/tyk/tyk.conf:/opt/tyk-gateway/tyk.conf
-    networks:
-      - gateway
-    deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
+      - "80:8000"
+      - "443:8443"
+      - "8001:8001"
+      - "7946:7946"
+      - "7946:7946/udp"
   eventstore:
     image: eventstore/eventstore
     ports:
-      - 2113:2113
-      - 1113:1113
+      - "2113:2113"
+      - "1113:1113"
     volumes:
       - /home/cap3/eventstore/data:/var/lib/eventstore
     networks:
@@ -65,7 +31,7 @@ services:
   micro-auth:
     image: waterchat/micro-auth
     ports:
-      - 3030:3000
+      - "3030:3000"
     depends_on:
       - eventstore
     networks:
