@@ -3,12 +3,14 @@ version: '3'
 services:
   kong-database:
     image: cassandra:3
+    restart: always
     volumes:
       - /home/cap3/kong/cassandra:/var/lib/cassandra
     ports:
       - "9042:9042"
   kong:
     image: kong:0.10
+    restart: always
     depends_on:
       - kong-database
     environment:
@@ -23,12 +25,14 @@ services:
       - "7946:7946/udp"
   kong-dashboard:
     image: pgbi/kong-dashboard:v2
+    restart: always
     ports:
       - "8080:8080"
     depends_on:
       - kong
   eventstore:
     image: eventstore/eventstore
+    restart: always
     ports:
       - "2113:2113"
       - "1113:1113"
@@ -36,6 +40,7 @@ services:
       - /home/cap3/eventstore/data:/var/lib/eventstore
   micro-auth:
     image: waterchat/micro-auth:latest
+    restart: always
     ports:
       - "3030:3000"
     dns:
