@@ -9,6 +9,8 @@ services:
       - "9042:9042"
   kong:
     image: kong:0.10
+    depends_on:
+      - kong-database
     environment:
       - KONG_DATABASE=cassandra
       - KONG_CASSANDRA_CONTACT_POINTS=kong-database
@@ -23,6 +25,8 @@ services:
     image: pgbi/kong-dashboard:v2
     ports:
       - "8080:8080"
+    depends_on:
+      - kong
   eventstore:
     image: eventstore/eventstore
     ports:
