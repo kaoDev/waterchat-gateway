@@ -2,11 +2,14 @@ version: '3'
 
 services:
   kong-database:
-    image: cassandra:3
-    volumes:
-      - /home/cap3/kong/cassandra:/var/lib/cassandra
+    image: postgres:9.4
     ports:
-      - "9042:9042"
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=kong
+      - POSTGRES_DB=kong
+    volumes:
+      - "/home/cap3/kong/postgres:/var/lib/postgresql/data"
     deploy:
       restart_policy:
         condition: on-failure
@@ -20,8 +23,7 @@ services:
     depends_on:
       - kong-database
     environment:
-      - KONG_DATABASE=cassandra
-      - KONG_CASSANDRA_CONTACT_POINTS=kong-database
+      - KONG_DATABASE=postgres
       - KONG_PG_HOST=kong-database
     ports:
       - "80:8000"
