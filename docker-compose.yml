@@ -8,6 +8,8 @@ services:
       - /home/cap3/kong/cassandra:/var/lib/cassandra
     ports:
       - "9042:9042"
+    networks:
+      - waterchat
   kong:
     image: kong:0.10
     restart: always
@@ -23,6 +25,8 @@ services:
       - "8001:8001"
       - "7946:7946"
       - "7946:7946/udp"
+    networks:
+      - waterchat
   kong-dashboard:
     image: pgbi/kong-dashboard:v2
     restart: always
@@ -30,6 +34,8 @@ services:
       - "8080:8080"
     depends_on:
       - kong
+    networks:
+      - waterchat
   eventstore:
     image: eventstore/eventstore
     restart: always
@@ -38,13 +44,20 @@ services:
       - "1113:1113"
     volumes:
       - /home/cap3/eventstore/data:/var/lib/eventstore
+    networks:
+      - waterchat
   micro-auth:
     image: waterchat/micro-auth:latest
     restart: always
     ports:
       - "3030:3000"
+    depends_on:
+      - eventstore
+    networks:
+      - waterchat
+networks:
+  waterchat:
     dns:
       - 8.8.8.8
       - 9.9.9.9
-    depends_on:
-      - eventstore
+  
