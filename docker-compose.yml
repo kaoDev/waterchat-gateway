@@ -71,6 +71,21 @@ services:
       - eventstore
     networks:
       - waterchat
+  messages:
+    image: waterchat/messages:latest
+    deploy:
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 10s
+    ports:
+      - "4000:4000"
+    depends_on:
+      - eventstore
+    networks:
+      - waterchat
 networks:
   waterchat:
   
