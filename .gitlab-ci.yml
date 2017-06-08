@@ -9,8 +9,9 @@ deploy:
   stage: deploy
   script:
     - docker stack deploy -c docker-compose.yml $PROJECT_GROUP
-    - docker stack services -q waterchat | while read service; do
-        docker service update --force $service
-      done
+    - | 
+        docker stack services -q waterchat | while read service; do
+          docker service update --force $service
+        done
   tags:
     - shell
