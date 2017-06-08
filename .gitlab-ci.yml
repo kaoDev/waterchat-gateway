@@ -1,6 +1,8 @@
 variables:
   PROJECT_GROUP: waterchat
   PROJECT_NAME: gateway
+  AUTH_SERVICE: ${PROJECT_GROUP}_micro-auth
+  MESSAGE_SERVICE: ${PROJECT_GROUP}_messages
 
 stages:
   - deploy
@@ -9,9 +11,7 @@ deploy:
   stage: deploy
   script:
     - docker stack deploy -c docker-compose.yml $PROJECT_GROUP
-    - | 
-        docker stack services -q waterchat | while read service; do
-          docker service update --force $service
-        done
+    - docker service update --force $AUTH_SERVICE
+    - docker service update --force $MESSAGE_SERVICE
   tags:
     - shell
