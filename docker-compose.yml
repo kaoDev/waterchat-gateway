@@ -10,16 +10,10 @@ services:
       - POSTGRES_DB=kong
     volumes:
       - "/home/cap3/kong/postgres:/var/lib/postgresql/data"
-    deploy:
-      restart_policy:
-        condition: any
     networks:
       - waterchat
   kong:
     image: kong:0.10
-    deploy:
-      restart_policy:
-        condition: any
     depends_on:
       - kong-database
     environment:
@@ -41,14 +35,8 @@ services:
       - kong
     networks:
       - waterchat
-    deploy:
-      restart_policy:
-        condition: any
   eventstore:
     image: eventstore/eventstore
-    deploy:
-      restart_policy:
-        condition: any
     ports:
       - "2113:2113"
       - "1113:1113"
@@ -58,13 +46,6 @@ services:
       - waterchat
   micro-auth:
     image: waterchat/micro-auth:latest
-    deploy:
-      update_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: any
-        delay: 10s
     ports:
       - "3030:3000"
     depends_on:
@@ -73,13 +54,6 @@ services:
       - waterchat
   messages:
     image: waterchat/messages:latest
-    deploy:
-      update_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: any
-        delay: 10s
     ports:
       - "4000:4000"
     depends_on:
