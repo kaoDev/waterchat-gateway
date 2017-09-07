@@ -15,3 +15,4 @@ deploy:
     - docker service update --force $MESSAGE_SERVICE
   tags:
     - shell
+    - waterchat
